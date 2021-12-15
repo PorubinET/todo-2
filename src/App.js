@@ -35,7 +35,7 @@ class App extends Component{
       done: false,
       id: this.maxId++,
     }
-    console.log('Object.keys(this.state.data', this.state.data.length)
+
     this.setState(({data}) => {
       const newArr = [...data, newItem];
       return {
@@ -48,7 +48,6 @@ class App extends Component{
     this.setState(({data}) => ({
       data: data.map(item => {
         if (item.id === id) {
-          console.log({...item, done: !item.done})
           return {...item, done: !item.done}
         }
         return item;
@@ -56,10 +55,11 @@ class App extends Component{
     }))
   }
 
-  allCompleated = (id) => {
+  allCompleated = () => {
     this.setState(({data}) => ({
       data: data.map(item => { 
-        return {...item, done: item.done = true}
+        console.log({...item, done: !item.done})
+        return {...item, done: !item.done}
       })
     }))
   }
@@ -70,8 +70,6 @@ class App extends Component{
         return items.filter(items => items.done);
       case "active":
         return items.filter(items => items.done === false);
-      // case "allCompleated":
-      //   return items.map(items => items.done = true);
       default:
         return items;
     }
@@ -89,6 +87,8 @@ class App extends Component{
     const tasksDone = this.state.data.filter(item => item.done === true).length;
     const visibleData = this.filterPost((data), filter)
     
+    const elements = data.map(item => item.id)
+    
 
     return (
       <div className="App">
@@ -99,13 +99,15 @@ class App extends Component{
                 <TaskInput 
                 tasksDone={tasksDone}
                 onAdd={this.addTask}
-                allCompleated={this.allCompleated}
                 onUpdateSearch={this.onUpdateSearch}
+                allCompleated={this.allCompleated}
+                elements={elements}
                 />
                 <TaskList 
                 data={visibleData}
                 onDelete={this.deleteItem}
                 doneTasks={this.doneTasks}
+                allCompleated={this.allCompleated}
                 onToggleRise={this.onToggleRise}
                 />
                 <Board 

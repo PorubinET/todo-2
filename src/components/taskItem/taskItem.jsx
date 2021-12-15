@@ -3,7 +3,7 @@ import './taskItem.scss';
 
 const TaskItem = (props) =>{
    
-        const {title, done, onDelete, doneTasks} = props;
+        const {title, done, onDelete, doneTasks, allCompleated} = props;
 
         let className = "to-do__text" 
         if  (done) {
@@ -25,7 +25,9 @@ const TaskItem = (props) =>{
                     </button>
                 </label>
                 <p className={className}>{title}</p>
+                <input className="to-do__checkbox-input" onClick={allCompleated} type="checkbox"/>
             </li>
+            
 
         );
     
