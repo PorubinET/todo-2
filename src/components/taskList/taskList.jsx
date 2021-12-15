@@ -2,7 +2,7 @@ import React from "react";
 import TaskItem from "../taskItem/taskItem";
 import './taskList.scss';
 
-const TaskList = ({data, onDelete, doneTasks }) => {
+const TaskList = ({data, onDelete, doneTasks}) => {
 
     const elements = data.map(item => {
         const {id, ...itemProps} = item;

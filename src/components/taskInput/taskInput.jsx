@@ -6,7 +6,6 @@ class TaskInput extends Component {
         super(props);
         this.state = {
             title: '',
-
         }
     }
 
@@ -26,13 +25,15 @@ class TaskInput extends Component {
         })
     }
 
+    
+
     render() {
         const {title} = this.state;
         return (
             <div className="to-do__task-input">
-                <button className="to-do__list-btn" type="submit">
-                    <img width={20} height={10} src="/img/arrow.svg" alt="arrow"/>
-                </button>
+                <input className="to-do__list-btn" type="checkbox">
+                    {/* <img width={20} height={10} src="/img/arrow.svg" alt="arrow"/> */}
+                </input>
                 <form className="add" onSubmit={this.onSubmit}>                
                     <input className="to-do__task"
                         value={title} type="text" 

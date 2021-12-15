@@ -11,10 +11,11 @@ class App extends Component{
     this.state = {
       data: [
         {id:"1", title: "Задача", done: false},
-        {id:"2", title: "Таска", done: false},
+        {id:"2", title: "Todo", done: false},
         {id:"3", title: "Срочно сделать", done: false},
+        {id:"4", title: "Прям капец как срочно", done: false},
       ],
-      term: "З"
+      filter: 'all'
     }
     this.maxId = this.state.data.length +1;  
   }
@@ -24,7 +25,6 @@ class App extends Component{
     this.setState(({data}) => {
       return {
         data: data.filter(item => item.id !== id),
-        // id: this.maxId -1,
       }
     })
   }
@@ -45,7 +45,6 @@ class App extends Component{
   }
 
   doneTasks = (id) => {
-
     this.setState(({data}) => ({
       data: data.map(item => {
         if (item.id === id) {
@@ -57,32 +56,38 @@ class App extends Component{
     }))
   }
 
-  // filterPost = (items, filter) => {
-  //   switch (filter) {
-  //     case "done":
-  //       return items.filter(items => items.done);
-  //     default:
-  //       return items
-  //   }
-  // }
+  allCompleated = (id) => {
+    this.setState(({data}) => ({
+      data: data.map(item => { 
+        return {...item, done: item.done = true}
+      })
+    }))
+  }
+
+  filterPost = (items, filter) => {
+    switch (filter) {
+      case "compleated":
+        return items.filter(items => items.done);
+      case "active":
+        return items.filter(items => items.done === false);
+      // case "allCompleated":
+      //   return items.map(items => items.done = true);
+      default:
+        return items;
+    }
+  }
 
 
-  // searchEmp = (items, term) => {
-  //   if (term.length === 0) {
-  //     return items
-  //   }
 
-  //   return items.filter(item => {
-  //     return item.name.indexOf(term) > -1
-  //   })
-  // }
-
+  onFilterSelect = (filter) => {
+    this.setState({filter});
+  }
 
   render(){
-    const {data} = this.state;
+    const {data, filter} = this.state;
     const tasksValue = this.state.data.filter(item => item.done === false).length;
     const tasksDone = this.state.data.filter(item => item.done === true).length;
-    // const visibleData = this.searchEmp(data, term);
+    const visibleData = this.filterPost((data), filter)
     
 
     return (
@@ -92,17 +97,22 @@ class App extends Component{
               <h1 className="to-do__title">todos</h1>
               <div className="to-do__block">
                 <TaskInput 
-                onAdd={this.addTask}
                 tasksDone={tasksDone}
+                onAdd={this.addTask}
+                allCompleated={this.allCompleated}
                 onUpdateSearch={this.onUpdateSearch}
                 />
                 <TaskList 
-                data={data}
+                data={visibleData}
                 onDelete={this.deleteItem}
                 doneTasks={this.doneTasks}
                 onToggleRise={this.onToggleRise}
                 />
-                <Board tasksValue={tasksValue}/>  
+                <Board 
+                filter={filter}
+                tasksValue={tasksValue}
+                onFilterSelect={this.onFilterSelect}
+                />  
               </div>
             </div>   
           </div>
